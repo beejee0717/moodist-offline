@@ -58,5 +58,16 @@ done
 
 echo "---"
 echo "files expected: $count"
-echo "files on disk:  $(find "$DEST" -type f | wc -l)"
+echo "files on disk:  $(find "$DEST" -type f \( -name '*.mp3' -o -name '*.wav' \) | wc -l)"
 du -sh "$DEST"
+
+# Convert downloads into seamless OGG loops (see make_seamless_loops.py).
+# Without this step the app still works, but loops have an audible seam.
+if python3 -c "import miniaudio, soundfile, numpy" 2>/dev/null; then
+  python3 "${ROOT}/tool/make_seamless_loops.py" "$DEST"
+else
+  echo "WARNING: python deps for seamless loops not found; keeping .mp3/.wav."
+  echo "To enable: pip install -r tool/requirements-audio.txt"
+  echo "then run: python3 tool/make_seamless_loops.py assets/sounds"
+  echo "and point lib/data/sound_catalog.dart asset paths at the .ogg files."
+fi
