@@ -34,10 +34,15 @@ The sound files are not committed to this repo (see `CREDITS.md`).
 Fetch them once from the upstream project, then build:
 
 ```sh
-./tool/fetch_sounds.sh   # downloads 89 audio files (~116 MB) into assets/sounds/
+pip install -r tool/requirements-audio.txt   # one-time, for seamless-loop processing
+./tool/fetch_sounds.sh   # downloads 89 sounds, converts them to seamless .ogg loops (~75 MB)
 flutter pub get
 flutter build apk --release --split-per-abi
 ```
+
+The fetch script trims MP3 padding and crossfades each file's tail
+into its head (`tool/make_seamless_loops.py`), so loops have no
+audible seam or dip when they restart.
 
 Release builds are signed with `android/upload-keystore.jks`
 (credentials in `android/key.properties`). Both files are git-ignored;

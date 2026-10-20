@@ -1,0 +1,6 @@
+# Only needed to (re)generate seamless loop assets; see
+# tool/make_seamless_loops.py. Not needed to build or run the app
+# once assets/sounds contains the processed .ogg files.
+miniaudio>=1.59
+soundfile>=0.12
+numpy>=1.26
